@@ -9,12 +9,12 @@ import java.util.HashMap;
 @Service
 public class StudentService {
 
-    private final HashMap<Long, Student> students = new HashMap<>();
-    private long lastId = 0;
+    private final HashMap‹Long,Student› students = new HashMap‹›();
+    private long count = 0;
 
-    public Student createStudent(Student student) {
-        student.setId(++lastId);
-        students.put(lastId, student);
+    public Student addStudent(Student student) {
+        student.setId(count++);
+        students.put(student.getId(), student);
         return student;
     }
 
@@ -22,20 +22,25 @@ public class StudentService {
         return students.get(id);
     }
 
-    public Student editStudent(Student student) {
-        if (students.containsKey(student.getId())) {
-            students.put(student.getId(), student);
-            return student;
+    public Student editStudent(long id, Student student) {
+        if (!students.containsKey(id)) {
+            return null;
         }
-        return null;
+        students.put(id, student);
+        return student;
     }
 
-    public Student deleteStudent(Long id) {
+    public Student deleteStudent(long id) {
         return students.remove(id);
     }
 
-    public Collection<Student> getAllStudents() {
-        return students.values();
+    public Collection‹Student› findByAge(int age) {
+        ArrayList‹Student› result = new ArrayList‹›();
+        for (Student student : students.values()) {
+            if (student.getAge() == age) {
+                result.add(student);
+            }
+        }
+        return result;
     }
 }
-

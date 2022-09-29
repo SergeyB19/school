@@ -8,13 +8,13 @@ import java.util.HashMap;
 
 @Service
 public class FacultyService {
-    private final HashMap<Long, Faculty> faculties = new HashMap<>();
-    private long lastId = 0;
 
+    private final HashMap‹Long, Faculty› faculties = new HashMap‹›();
+    private long count = 0;
 
-    public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(++lastId);
-        faculties.put(lastId, faculty);
+    public Faculty addFaculty(Faculty faculty) {
+        faculty.setId(count++);
+        faculties.put(faculty.getId(), faculty);
         return faculty;
     }
 
@@ -22,19 +22,25 @@ public class FacultyService {
         return faculties.get(id);
     }
 
-    public Faculty editFaculty(Faculty faculty) {
-        if (faculties.containsKey(faculty.getId())) {
-            faculties.put(faculty.getId(), faculty);
-            return faculty;
+    public Faculty editFaculty(long id, Faculty faculty) {
+        if (!faculties.containsKey(id)) {
+            return null;
         }
-        return null;
+        faculties.put(id, faculty);
+        return faculty;
     }
 
     public Faculty deleteFaculty(long id) {
         return faculties.remove(id);
     }
 
-    public Collection<Faculty> getAllFaculty() {
-        return faculties.values();
+    public Collection‹Faculty› findByColor(String color) {
+        ArrayList‹Faculty› result = new ArrayList‹›();
+        for (Faculty faculty : faculties.values()) {
+            if (Objects.equals(faculty.getColor(), color)) {
+                result.add(faculty);
+            }
+        }
+        return result;
     }
 }
